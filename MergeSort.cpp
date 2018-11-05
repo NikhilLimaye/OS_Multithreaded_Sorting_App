@@ -5,12 +5,15 @@
  *      Author: samarth
  */
 #include<iostream>
+#include<vector>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 class MergeSorter{
 
 public:
-	void mergeArrays(int arr[],int leftStart,int middleIndex, int rightEnd){
+	void mergeArrays(vector<int>& arr,int leftStart,int middleIndex, int rightEnd){
 
 		int i;
 		int j;
@@ -22,6 +25,7 @@ public:
 		for(i=0;i<n1;i++){
 			l[i]=arr[i+leftStart];
 		}
+
 		for(j=0;j<n2;j++){
 			r[j]=arr[j+middleIndex+1];
 		}
@@ -52,7 +56,7 @@ public:
 		}
 }
 
-	void mergeSortHelper(int arr[],int l, int r){
+	void mergeSortHelper(vector<int>& arr,int l, int r){
 		if(l<r){
 
 
@@ -63,7 +67,7 @@ public:
 		}
 
 	}
-	void mergeSort(int arr[],int size){
+	void mergeSort(vector<int>& arr,int size){
 		int r=size-1;
 		int l=0;
 		mergeSortHelper(arr,l,r);
@@ -72,15 +76,21 @@ public:
 };
 
 int main(){
-	int arr[]={45,22,112,45,2,3,78,38,1,90};
-	for(int i=0;i<10;i++){
-		cout<<arr[i]<<" ";
+	vector<int> arr;
+	for(int i=10000;i>0;i--){
+		arr.push_back(i);
 	}
+
 	cout<<endl;
 	MergeSorter ms;
-	ms.mergeSort(arr, 10);
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	ms.mergeSort(arr, arr.size());
+	high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
-	for(int k=0;k<10;k++){
+	auto duration = duration_cast<microseconds>( t2 - t1 ).count();
+	cout<<"time required to sort: "<<duration/1000.0<<" seconds";
+	cout<<endl;
+	for(int k=0;k<10000;k++){
 		cout<<arr[k]<<" ";
 	}
 	cout<<endl;
